@@ -48,6 +48,9 @@ def main():
     ap.add_argument("--since", default=None)
     ap.add_argument("--no-grid", action="store_true", help="주제 그대로만 검색")
     ap.add_argument("--max-queries", type=int, default=12)
+    ap.add_argument("--queries", default=None, help="질의 파일(한 줄에 하나). 격자에 추가된다")
+    ap.add_argument("--exclude", default=None, help="이미 수집한 영상 id 파일(한 줄에 하나) → 채택 제외")
+    ap.add_argument("--channel-kw", nargs="*", default=None, help="채널 목록에서 제목에 이 단어가 있는 것만 (기본: 주제의 4자 이상 단어)")
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
 
@@ -59,7 +62,12 @@ def main():
                 queries.append(" ".join(x for x in [a.topic, ind, fw] if x))
             for fl in FAIL_WORDS[:2]:
                 queries.append(" ".join(x for x in [a.topic, ind, fl] if x))
+    if a.queries and os.path.isfile(a.queries):
+        queries += [l.strip() for l in open(a.queries, encoding="utf-8") if l.strip() and not l.startswith("#")]
     queries = list(dict.fromkeys(queries))[: a.max_queries]
+    exclude = set()
+    if a.exclude and os.path.isfile(a.exclude):
+        exclude = {l.strip() for l in open(a.exclude, encoding="utf-8") if l.strip()}
 
     cands, failures = {}, []
     since = a.since.replace("-", "") if a.since else None
@@ -98,7 +106,7 @@ def main():
             if d is None:
                 failures.append({"stage": "discover", "target": ch, "reason": err})
                 continue
-            kw = [w.lower() for w in re.findall(r"\w{4,}", a.topic)]
+            kw = [w.lower() for w in (a.channel_kw or re.findall(r"\w{4,}", a.topic))]
             n = 0
             for e in d.get("entries") or []:
                 t = (e.get("title") or "").lower()
@@ -136,7 +144,9 @@ def main():
                 print("RSS %-60s 항목 %d" % (feed[:60], len(fp.entries)))
 
     for r in cands.values():
-        if SKIP_TITLE.search(r["title"] or ""):
+        if r["id"] in exclude:
+            r["selected"], r["skip_reason"] = False, "already collected"
+        elif SKIP_TITLE.search(r["title"] or ""):
             r["selected"], r["skip_reason"] = False, "trailer/shorts"
         elif r["source_kind"] != "rss" and r["duration_sec"] and r["duration_sec"] < a.min_minutes * 60:
             r["selected"], r["skip_reason"] = False, "short (<%.0f min)" % a.min_minutes

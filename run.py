@@ -22,6 +22,7 @@ def main():
     ap.add_argument("--industry", nargs="*", default=[]); ap.add_argument("--channels"); ap.add_argument("--rss")
     ap.add_argument("--per-query", type=int, default=15); ap.add_argument("--max-videos", type=int, default=20)
     ap.add_argument("--min-minutes", type=float, default=8); ap.add_argument("--since"); ap.add_argument("--max-queries", type=int, default=12); ap.add_argument("--langs", nargs="+", default=["en", "ko"])
+    ap.add_argument("--queries"); ap.add_argument("--exclude"); ap.add_argument("--channel-kw", nargs="*"); ap.add_argument("--no-grid", action="store_true")
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
 
@@ -30,6 +31,10 @@ def main():
     if a.channels: args += ["--channels", a.channels]
     if a.rss: args += ["--rss", a.rss]
     if a.since: args += ["--since", a.since]
+    if a.queries: args += ["--queries", a.queries]
+    if a.exclude: args += ["--exclude", a.exclude]
+    if a.channel_kw: args += ["--channel-kw"] + a.channel_kw
+    if a.no_grid: args += ["--no-grid"]
     rc, out = sh(args); print(out)
 
     cands = [json.loads(l) for l in open(os.path.join(a.out, "candidates.jsonl"), encoding="utf-8")]

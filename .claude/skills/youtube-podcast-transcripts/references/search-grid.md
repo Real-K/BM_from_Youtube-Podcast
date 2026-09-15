@@ -11,6 +11,17 @@
 
 기본 조합: `핵심어 + 산업어 + 형식어`, `핵심어 + 산업어 + 실패어`. 각 질의당 `--per-query`(기본 15)건.
 
+## 질의 파일과 제외 목록
+
+`--queries queries.txt` — 한 줄에 질의 하나(`#` 주석). 조직명·직함을 넣은 질의는 격자로 만들 수 없으므로 파일로 준다.
+예: `Erste Group COO AI agents interview`, `US Bank chief AI officer interview 2026`.
+`--exclude ids.txt` — 이미 수집한 영상 id. 후보에는 남고 `skip_reason: already collected`로 채택만 제외된다.
+`--channel-kw agent agentic CEO CIO …` — 채널 목록을 제목 단어로 거를 때 주제어 대신 쓸 단어.
+
+실측(2026-09-15, 질의 75 + 채널 16): 후보 1,382 → 10분 이상 704 → 제목 선별 95 → 자막 확보 79. 임원 직함을 넣은
+질의는 팟캐스트 인터뷰(CXOTalk, CAIO, Metis Strategy)를, 채널 목록은 벤더 고객 세션(OpenAI Customer Ignite,
+AWS FSI, Salesforce customer keynote)을 냈다. 채널 9개는 404·videos 탭 없음·API 차단으로 실패했다.
+
 ## 채널 목록이 낫다
 
 `--channels channels.txt`에 채널 URL을 한 줄씩. `--flat-playlist`로 전체 목록을 받아 제목·길이로 거른다.
