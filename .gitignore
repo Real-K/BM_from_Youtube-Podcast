@@ -7,3 +7,7 @@ __pycache__/
 audio.*
 .DS_Store
 test/
+
+# insane-search runtime
+.claude/skills/insane-search/observations/
+.claude/skills/insane-search/engine/templates/node_modules/

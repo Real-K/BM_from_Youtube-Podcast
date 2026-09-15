@@ -12,14 +12,15 @@
 ```bash
 git clone https://github.com/Real-K/BM_from_Youtube-Podcast
 cd BM_from_Youtube-Podcast
-pip install -r requirements.txt        # yt-dlp, feedparser(선택)
+pip install -r requirements.txt        # yt-dlp, insane-search 엔진 의존성(curl_cffi 등), feedparser
 ```
 
-이 폴더를 Claude Code에서 열면 `.claude/skills/youtube-podcast-transcripts`가 스킬로 잡힌다.
-다른 프로젝트에서 쓰려면 그 디렉터리를 그 프로젝트의 `.claude/skills/`에 복사한다(자족적이다).
+이 폴더를 Claude Code에서 열면 `.claude/skills/` 아래 두 스킬(`youtube-podcast-transcripts`, `insane-search`)이 잡힌다.
+다른 프로젝트에서 쓰려면 두 디렉터리를 그 프로젝트의 `.claude/skills/`에 복사한다.
 
-[insane-search](https://github.com/gptaku/gptaku-plugins)가 설치돼 있으면 차단된 URL·비YouTube 호스트 접근에
-그것을 쓴다. 없어도 YouTube는 된다 — YouTube는 insane-search도 yt-dlp를 쓴다.
+[insane-search](https://github.com/fivetaku/insane-search) 0.16.3이 `.claude/skills/insane-search/`에 **통째로 들어 있다**
+(MIT, 출처·수정 내역은 `UPSTREAM.md`). 별도 플러그인 설치 없이 차단된 URL·비YouTube 호스트 접근에 쓴다.
+YouTube 자체는 yt-dlp면 된다 — insane-search도 YouTube에는 yt-dlp를 쓴다.
 
 ## 쓰기
 

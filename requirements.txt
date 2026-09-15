@@ -1,4 +1,14 @@
 yt-dlp>=2025.1.1
-feedparser>=6.0 ; python_version >= "3.8"
-# 선택: 오디오만 있는 팟캐스트의 ASR. 설치는 사용자가 결정한다.
+feedparser>=6.0
+# insane-search engine (.claude/skills/insane-search) — fetch chain
+curl_cffi>=0.7
+pyyaml>=6.0
+markdownify>=0.13
+# optional: PDF extraction / main-content extraction / browser lanes
+pypdf>=4.0
+# pdfplumber
+# resiliparse
+# nodriver
+# patchright
+# optional: ASR for audio-only podcasts
 # faster-whisper

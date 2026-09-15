@@ -35,7 +35,7 @@ def main():
     if rc != 0 or not out.strip():
         meta = {"url": url, "transcript_status": "blocked", "error": err.strip()[-600:],
                 "fetched_at": datetime.date.today().isoformat(),
-                "note": "yt-dlp 실패. 비YouTube 호스트·차단이면 insane-search(python3 -m engine <URL> --trace)로 넘긴다."}
+                "note": "yt-dlp 실패. 비YouTube 호스트·차단이면 .claude/skills/insane-search에서 python -m engine <URL> --trace 로 넘긴다."}
         json.dump(meta, open(os.path.join(a.out, "meta.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
         print("BLOCKED", url, err.strip()[-200:])
         return 2
