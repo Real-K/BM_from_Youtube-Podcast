@@ -1,0 +1,9 @@
+{"ts": "13:26", "kind": "pct_mismatch", "text": "2 million requests per second monthly. And now, after modernization, we are able to do over 8 million requests. It's demonstrating gain of the search for our customers. Let's see a concrete example of the modernization before and after. Before the modernizatio", "detail": {"a": 2.0, "b": 8.0, "unit": "million", "stated_pct": 40.0, "computed_pct": 300.0}}
+{"ts": "18:46", "kind": "pct_mismatch", "text": "20,000 MIPS on the mainframe. MIPS means millions instructions per second. Could be very expensive. As I said before, modernization is a journey. In 2025, we had only 3,000 mips, which means is a reduction of consumption mips over 9%", "detail": {"a": 20000.0, "b": 3000.0, "unit": "MIPS", "stated_pct": 9.0, "computed_pct": 85.0}}
+{"ts": "18:46", "kind": "adjacent_conflict", "text": "216 petabytes", "detail": {"other_ts": "18:46", "other": "206 petabytes"}}
+{"ts": "05:02", "kind": "host_insert", "text": "nd corporate accounts in the same place. >> [clears throat] >> And for that we defined five technical drivers.", "detail": {"cut_before": "ts in the same place. >> [clears throat]"}}
+{"ts": "07:32", "kind": "host_insert", "text": " we need to do uh this in this platform. >> [clears throat] >> So, uh Amazon OpenSearch is the case that we are using th", "detail": {"cut_before": "his in this platform. >> [clears throat]"}}
+{"ts": "18:46", "kind": "host_insert", "text": "is means increased over 53% faster than before. >> [snorts] >> When When we talk about business feature, we can see an i", "detail": {"cut_before": "over 53% faster than before. >> [snorts]"}}
+{"ts": "01:47", "kind": "gap", "text": "Itau.", "detail": {"gap_sec": 4.6}}
+{"ts": "13:21", "kind": "truncated", "text": "of the presentation is", "detail": {"gap_sec": 4.2}}
+{"ts": "18:42", "kind": "gap", "text": "94 billion requests in 2025.", "detail": {"gap_sec": 4.2}}

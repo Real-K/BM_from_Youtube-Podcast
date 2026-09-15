@@ -1,0 +1,9 @@
+out/
+__pycache__/
+*.pyc
+*.mp3
+*.m4a
+*.webm
+audio.*
+.DS_Store
+test/

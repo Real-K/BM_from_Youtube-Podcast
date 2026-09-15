@@ -1,0 +1,41 @@
+{
+ "id": "ZxE9nh0wkGI",
+ "url": "https://www.youtube.com/watch?v=ZxE9nh0wkGI",
+ "title": "AWS FSI NYC 2026 - From legacy to intelligent: How Itaú modernized bank statements",
+ "channel": "AWS Events",
+ "uploader": "AWS Events",
+ "duration_sec": 1694,
+ "upload_date": "20260528",
+ "description_head": "For five decades, Itaú Unibanco's bank statement system ran on mainframes. Discover how Latin America's largest private bank migrated to AWS and harnessed Amazon Bedrock to redefine how clients interact with their account statements. Learn how this migration reduced operational costs by approximately 80%, improved system resilience, and enabled generative AI-powered natural language search and voice commands, enabling customers to ask \"was my salary deposited?\" or \"has the utility bill been paid",
+ "transcript_auto": true,
+ "transcript_lang": "en",
+ "transcript_track": "en (auto)",
+ "manual_tracks": [],
+ "auto_tracks": [
+  "aa",
+  "ab",
+  "af",
+  "ak",
+  "am",
+  "ar",
+  "as",
+  "ay",
+  "az",
+  "ba",
+  "be",
+  "bg"
+ ],
+ "transcript_status": "ok",
+ "fetched_at": "2026-09-15",
+ "tool": "yt-dlp",
+ "speaker": {
+  "host": "",
+  "guests": [],
+  "attribution": "미확인",
+  "note": ""
+ },
+ "speaker_role": "unknown",
+ "format": "",
+ "reciting": [],
+ "notes": ""
+}
