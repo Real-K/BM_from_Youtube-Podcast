@@ -136,11 +136,16 @@ def main():
                         add({"id": m.group(1), "title": e.get("title"), "channel": fp.feed.get("title"), "duration": 0}, "rss:" + feed, "rss")
                     else:
                         enc = next((l.get("href") for l in e.get("links", []) if l.get("rel") == "enclosure"), None)
+                        tr = e.get("podcast_transcript")
+                        tr = tr if isinstance(tr, dict) and tr.get("url") else None
                         rid = "rss_" + re.sub(r"\W+", "", (e.get("id") or e.get("link") or e.get("title") or ""))[:24]
                         cands.setdefault(rid, {"id": rid, "url": e.get("link") or enc, "title": e.get("title"), "channel": fp.feed.get("title"),
                                                "duration_sec": 0, "upload_date": None, "matched_queries": ["rss:" + feed], "source_kind": "rss",
                                                "format_guess": "podcast", "selected": True,
-                                               "skip_reason": "", "audio_url": enc, "note": "유튜브 링크 없음 — 자막은 호스트 제공 시에만. 없으면 audio_only(ASR 필요)"})
+                                               "skip_reason": "", "audio_url": enc,
+                                               "transcript_url": (tr or {}).get("url"), "transcript_type": (tr or {}).get("type"),
+                                               "note": ("발행자 전사본 있음 — fetch_podcast_transcript.py로 받는다"
+                                                        if tr else "유튜브 링크·발행자 전사본 없음 — 오디오뿐이라 ASR 필요")})
                 print("RSS %-60s 항목 %d" % (feed[:60], len(fp.entries)))
 
     for r in cands.values():

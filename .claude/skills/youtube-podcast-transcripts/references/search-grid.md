@@ -58,10 +58,23 @@ Sequoia, No Priors, 11:FS…)이 키워드 검색보다 세션·인터뷰를 잘
 
 `--rss feeds.txt`에 피드 URL을 한 줄씩(`feedparser` 필요). 에피소드마다:
 
-1. 설명·링크에 YouTube 링크가 있으면 → YouTube 경로로 자막
-2. 없으면 에피소드 페이지 URL을 yt-dlp에 넘긴다 — 지원 호스트면 메타는 나오지만 **자막은 거의 없다**
-3. 오디오만 있고 자막이 없으면 `transcript_status: audio_only` — ASR(whisper 계열)이 필요하다. 이 스킬은 ASR을
-   설치하지 않는다. 있으면 `--asr` 훅으로 붙일 수 있다(`fetch_transcript.py` 참조)
+1. **`podcast:transcript` 태그**(Podcasting 2.0)가 있으면 발행자 전사본을 직접 받는다 →
+   `fetch_podcast_transcript.py`. 화자 이름과 시각이 붙어 있어 유튜브 자동 자막보다 낫다.
+2. 설명·링크에 YouTube 링크가 있으면 → YouTube 경로로 자막
+3. 회차 페이지에 전사본을 싣는 팟캐스트가 있다 — 페이지를 받아 본문을 쓴다. 차단되면 insane-search로 받는다
+4. 셋 다 없으면 오디오뿐이다. ASR이 필요하며 이 스킬은 설치하지 않는다(`fetch_transcript.py --asr` 훅)
+
+실측(2026-09-16, 피드 6종):
+
+| 피드 | 최근 60회차 중 |
+|---|---|
+| Practical AI (Changelog) | `podcast:transcript` 60건 · 유튜브 링크 8건 |
+| Dwarkesh | 유튜브 링크 52건 · 전사 태그 0 |
+| Latent Space | 유튜브 링크 30건 · 전사 태그 0. 회차 페이지에 전사본 있음(10만 자, 화자 표기) |
+| Lenny's Podcast | 유튜브 링크 14건 · 전사 태그 0 |
+| a16z · NVIDIA AI Podcast | 유튜브 링크 0 · 전사 태그 0 — **오디오뿐** |
+
+전체로 보면 RSS 회차 1,139건 중 유튜브로 자막을 받을 수 있는 것은 28건이었다. **전사 태그를 먼저 보는 편이 낫다.**
 
 ## 거르기
 

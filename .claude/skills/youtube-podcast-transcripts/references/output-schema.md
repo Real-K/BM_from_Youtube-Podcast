@@ -69,6 +69,28 @@
 
 `clean.md`에 교정을 적용한 것. 교정 자리는 `⟦원문 → 교정 (basis)⟧`, `[sic]`은 `⟦원문 [sic]⟧`.
 
+## 팟캐스트 발행자 전사본 (`fetch_podcast_transcript.py`)
+
+유튜브 경로와 산출물이 다르다. 회차 하나가 폴더 하나다.
+
+```
+out/<slug>/<episode_id>/
+  meta.json    서지 + 전사 출처
+  raw.<ext>    발행자 전사본 원문(vtt·json·html·srt) — 불변
+  clean.md     **화자** **[MM:SS]** 문단
+out/<slug>/no_transcript.jsonl   전사 태그가 없는 회차 — show·title·link·audio_url·사유
+```
+
+```json
+{"id": "...", "show": "Practical AI", "title": "...", "url": "<회차 페이지>", "feed": "<RSS>",
+ "published": "...", "audio_url": "<mp3>", "transcript_source": "publisher (podcast:transcript)",
+ "transcript_url": "...", "transcript_type": "text/vtt", "transcript_auto": null,
+ "note": "발행자 전사본. ASR 기반일 수 있다", "fetched_at": "2026-09-16"}
+```
+
+`transcript_auto`가 **null**인 것은 "발행자가 만들었고 기계 전사인지 알 수 없다"는 뜻이다.
+유튜브 경로의 `true`(자동) / `false`(수동)와 구분한다. 화자 표기도 발행자가 붙인 것이므로 검증 대상이다.
+
 ## `INDEX.md`
 
 | id | 제목 | 채널 | 길이 | 자막 | 의심 | 교정 | 화자 | 형식 | 비고 |

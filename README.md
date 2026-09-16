@@ -44,6 +44,15 @@ out/agentic-banking/
 그다음 Claude Code에서 "out/agentic-banking의 flags를 보고 교정해 줘" — 스킬이 규칙대로 `corrections.jsonl`을 쓰고
 `apply_corrections.py`로 교정본을 만든다.
 
+## 팟캐스트는 유튜브가 없어도 된다
+
+```bash
+python .claude/skills/youtube-podcast-transcripts/scripts/fetch_podcast_transcript.py     --feed https://changelog.com/practicalai/feed --out out/pod --limit 20 --match agent
+```
+
+RSS의 `podcast:transcript`(Podcasting 2.0) 태그가 있으면 **발행자 전사본을 바로 받는다. 화자 이름과 시각이 붙어 있어
+유튜브 자동 자막보다 낫다.** 태그가 없는 회차는 `no_transcript.jsonl`에 오디오 URL과 함께 남고, 그것은 음성 전사가 필요하다.
+
 ## 세 불변식
 
 1. **원문 VTT는 손대지 않는다.** 교정본은 별도 파일이고 원문으로 되돌아갈 수 있다.
@@ -68,8 +77,8 @@ out/agentic-banking/
 
 - 수동 자막은 드물다. 최근 두 배치 161편 중 32편(20%)이었고 나머지는 자동 자막이다.
 - 자동 자막은 화자를 구분하지 않는다. 화자 귀속은 항상 추정·미확인이다.
-- 오디오만 있는 팟캐스트(자막 없음)는 ASR이 필요하다. `--asr`은 `faster-whisper`가 설치된 경우에만 동작하며 이
-  저장소는 설치하지 않는다.
+- 팟캐스트 피드에 `podcast:transcript`도 유튜브 링크도 없으면 오디오뿐이라 음성 전사가 필요하다. `--asr`은
+  `faster-whisper`가 설치된 경우에만 동작하며 이 저장소는 설치하지 않는다. 실측: 피드 회차 1,139건 중 유튜브 링크 보유 28건.
 - 검색 수율: 일반 키워드는 벤더 쇼츠·튜토리얼이 대부분이다. 산업어·실패어를 붙이거나 채널 목록을 쓰라.
 
 ## 예시

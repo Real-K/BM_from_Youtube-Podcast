@@ -82,6 +82,28 @@ python scripts/fetch_transcript.py <url-or-id> --out out/<slug>/<id> [--langs en
 폴더 이름도 `--out=-B__O2eqRYc`처럼 `=`로 붙인다. 그리고 **이름 접두사로 폴더를 거르지 않는다** —
 `_`로 시작하는 폴더를 건너뛰면 `_IZR66PaJbM` 같은 실제 영상이 조용히 빠진다. 건너뛸 폴더는 이름을 나열한다.
 
+### 2-1. 팟캐스트 — 유튜브가 없을 때 `scripts/fetch_podcast_transcript.py`
+
+팟캐스트는 유튜브에 없는 편이 많다. 그때 순서는 셋이다.
+
+```bash
+python scripts/fetch_podcast_transcript.py --feed <RSS URL> --out out/<slug> [--limit 20] [--match agent 도입]
+```
+
+| 경로 | 무엇 | 실측 |
+|---|---|---|
+| 1. RSS 안의 유튜브 링크 | 설명란에 링크가 있으면 유튜브 경로로 자막 | 회차 1,139건 중 28건뿐 |
+| 2. **`podcast:transcript` 태그** | 발행자가 올린 전사본을 직접 받는다. **화자 이름과 시각이 붙어 있다** | Practical AI 최근 60회차 전부 보유, 8회차 시험 수집 성공 |
+| 3. 에피소드 페이지 본문 | 일부 팟캐스트는 회차 페이지에 전사본을 싣는다. 차단되면 insane-search로 받는다 | Latent Space·Dwarkesh 회차 페이지에서 화자 표기 있는 본문 10만 자 확인 |
+| 4. 오디오뿐 | ASR이 필요하다. 이 저장소는 설치하지 않는다 | faster-whisper·ffmpeg 모두 미설치 |
+
+`podcast:transcript`는 vtt·json·html·srt를 지원한다. **vtt와 json을 html보다 먼저** 고른다(구조가 남아 있다).
+전사 태그가 없는 회차는 `no_transcript.jsonl`에 오디오 URL과 함께 남는다 — 그 목록이 ASR 대상이다.
+
+**발행자 전사본은 자동 자막의 약점 하나를 없앤다.** 유튜브 자동 자막은 화자를 구분하지 않아 귀속이 늘 추정이었다.
+발행자 전사본에는 화자 이름이 있다. 다만 그 전사본도 ASR로 만들었을 수 있으므로 **오류가 없다는 뜻은 아니다.**
+숫자·고유명사 규칙은 그대로 적용한다.
+
 ### 3. 정리 — `scripts/correct_transcript.py` (기계)
 
 ```bash
