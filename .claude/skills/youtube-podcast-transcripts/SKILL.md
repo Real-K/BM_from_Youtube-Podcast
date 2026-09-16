@@ -104,6 +104,25 @@ python scripts/fetch_podcast_transcript.py --feed <RSS URL> --out out/<slug> [--
 발행자 전사본에는 화자 이름이 있다. 다만 그 전사본도 ASR로 만들었을 수 있으므로 **오류가 없다는 뜻은 아니다.**
 숫자·고유명사 규칙은 그대로 적용한다.
 
+### 2-2. 자막도 전사본도 없을 때 — `scripts/transcribe.py` (음성 전사)
+
+```bash
+python scripts/transcribe.py <URL·id·오디오 파일> --out out/<slug>/<id> --model small --lang ko
+```
+
+오디오를 받아 16kHz 모노로 바꾼 뒤 whisper.cpp로 전사해 `raw.vtt`를 만든다. 그다음은 기존 경로와 같다.
+
+| 모델 | 속도(CPU 실측) | 한국어 고유명사 |
+|---|---|---|
+| base | 실시간의 12.6배 | "롯데 이노베이트" → "못돼 이노베이트" |
+| small | 실시간의 3.4배 | "롯데 이노베이트" 정확 |
+
+**한국어는 small 이상을 쓴다.** base는 빠르지만 조직명이 무너져 사례 수집에 쓸 수 없다.
+
+**ASR 결과는 자동 자막과 같은 등급이다.** 화자를 구분하지 않고 고유명사·숫자가 틀린다. `transcript_source`에
+모델까지 적어 두고 교정 규칙을 그대로 적용한다. 백엔드 기본값은 pywhispercpp다 —
+faster-whisper는 Python 3.14에서 세그폴트로 죽는다(`pip install pywhispercpp imageio-ffmpeg`).
+
 ### 3. 정리 — `scripts/correct_transcript.py` (기계)
 
 ```bash

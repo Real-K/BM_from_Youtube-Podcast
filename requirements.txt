@@ -10,5 +10,9 @@ pypdf>=4.0
 # resiliparse
 # nodriver
 # patchright
-# optional: ASR for audio-only podcasts
+# 음성 전사(ASR) — 자막도 발행자 전사본도 없는 오디오용
+pywhispercpp>=1.2
+imageio-ffmpeg>=0.5
+# faster-whisper는 Python 3.14 + ctranslate2 4.8에서 세그폴트로 죽는다(2026-09 확인).
+# Python 3.12 이하에서만 대안으로 쓴다.
 # faster-whisper
