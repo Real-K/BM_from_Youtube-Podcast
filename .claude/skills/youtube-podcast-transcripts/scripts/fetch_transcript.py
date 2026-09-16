@@ -2,6 +2,8 @@
 """URL/ID → raw.vtt + meta.json. id가 '-'로 시작하면 --id로 넘기거나 URL을 쓴다. 수동 자막을 먼저, 없으면 자동 자막. 어느 쪽인지 기록한다.
 
 사용: python fetch_transcript.py <url-or-id> --out <dir> [--langs en ko] [--asr]
+  경로도 마찬가지다. '-'로 시작하는 폴더명은 --out=-B__O2eqRYc 처럼 '=' 형태로 넘긴다.
+
   --asr  자막이 전혀 없을 때 faster_whisper가 설치돼 있으면 오디오를 받아 전사한다(선택, 느림)
 """
 import argparse, datetime, glob, io, json, os, shutil, subprocess, sys
@@ -32,7 +34,7 @@ def main():
     ap.add_argument("--asr", action="store_true")
     argv = sys.argv[1:]
     if argv and argv[0].startswith("-") and not argv[0].startswith("--") and len(argv[0]) == 11:
-        argv = ["--id", argv[0]] + argv[1:]          # '-B__O2eqRYc' 같은 id
+        argv = ["--id=" + argv[0]] + argv[1:]        # '-B__O2eqRYc' 같은 id. "--id=값" 형태라야 값이 '-'로 시작해도 된다
     a = ap.parse_args(argv)
     target = a.target_id or a.target
     if not target:
