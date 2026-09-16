@@ -22,6 +22,32 @@
 질의는 팟캐스트 인터뷰(CXOTalk, CAIO, Metis Strategy)를, 채널 목록은 벤더 고객 세션(OpenAI Customer Ignite,
 AWS FSI, Salesforce customer keynote)을 냈다. 채널 9개는 404·videos 탭 없음·API 차단으로 실패했다.
 
+## 2차 실측 (2026-09-16) — 축을 넓히면 무엇이 늘어나나
+
+질의 144(업무 프로세스명·임원 직함·컨퍼런스명·팟캐스트 프로그램명·실패어·비영어권) + 채널 60 + RSS 8.
+
+| | |
+|---|---:|
+| 후보 | 3,992 |
+| 10분 이상 | 2,838 |
+| 유튜브 id 보유 | 1,727 |
+| RSS 오디오 전용(자막 불가) | 1,111 |
+
+**업무 프로세스 이름이 조직명보다 넓게 긁는다.** 1차의 조직명 질의는 이미 아는 기업만 냈다. "claims adjudication",
+"prior authorization", "IT service desk ticket triage" 같은 프로세스명은 모르던 조직의 세션을 낸다.
+
+**RSS는 이 스킬에서 수율이 낮다.** 팟캐스트 피드 1,139 회차 중 설명란에 유튜브 링크가 있어 자막을 받을 수 있는 것은
+28건뿐이었다. 나머지는 오디오만이고 ASR 없이는 쓸 수 없다. 피드 8개 중 2개는 XML 파싱 실패, 3개는 항목 0이었다.
+**팟캐스트는 RSS보다 유튜브 채널로 찾는 편이 낫다.**
+
+**채널 핸들은 자주 틀린다.** 1차 9개, 2차 20개가 실패했다. 두 유형이다. `This channel does not have a videos tab`
+(@Pega, @EY, @theCUBE, @EyeOnAI, @NICELtd, @Intercom)은 핸들이 다르거나 영상 탭이 없는 것이고,
+`Unable to download API page: HTTP Error`(@Gartner_inc, @money2020, @DBSBank, @WalmartGlobalTech 등)는 접근 차단이다.
+**핸들을 바꿔 재시도해도 같은 실패가 반복될 수 있다** — 1차에서 실패한 7개는 2차에 다른 주소로 넣었으나 4개가 또 실패했다.
+
+**제목 점수로 줄여야 판독이 감당된다.** 2,838건을 다 읽힐 수는 없다. 튜토리얼 어휘(how to build, course, n8n,
+step by step, beginners)에 큰 감점을 주고 agent·사례·임원 직함·산업어에 가점을 주면 744건이 남고, 상위 660건만 판독에 넘겼다.
+
 ## 채널 목록이 낫다
 
 `--channels channels.txt`에 채널 URL을 한 줄씩. `--flat-playlist`로 전체 목록을 받아 제목·길이로 거른다.
