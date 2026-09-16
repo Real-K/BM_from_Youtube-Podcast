@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""URL/ID → raw.vtt + meta.json. 수동 자막을 먼저, 없으면 자동 자막. 어느 쪽인지 기록한다.
+"""URL/ID → raw.vtt + meta.json. id가 '-'로 시작하면 --id로 넘기거나 URL을 쓴다. 수동 자막을 먼저, 없으면 자동 자막. 어느 쪽인지 기록한다.
 
 사용: python fetch_transcript.py <url-or-id> --out <dir> [--langs en ko] [--asr]
   --asr  자막이 전혀 없을 때 faster_whisper가 설치돼 있으면 오디오를 받아 전사한다(선택, 느림)
@@ -23,12 +23,21 @@ def norm_url(x):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("target")
+    # 영상 id는 '-'나 '_'로 시작할 수 있다. '-'로 시작하면 argparse가 옵션으로 읽어 죽으므로
+    # 위치 인자 앞에 '--'가 없어도 되도록 먼저 분리한다. URL을 넘기는 쪽이 항상 안전하다.
+    ap.add_argument("target", nargs="?", default=None)
+    ap.add_argument("--id", dest="target_id", default=None, help="영상 id를 명시적으로 넘길 때 ('-'로 시작하는 id에 사용)")
     ap.add_argument("--out", required=True)
     ap.add_argument("--langs", nargs="+", default=["en", "ko"])
     ap.add_argument("--asr", action="store_true")
-    a = ap.parse_args()
-    url = norm_url(a.target)
+    argv = sys.argv[1:]
+    if argv and argv[0].startswith("-") and not argv[0].startswith("--") and len(argv[0]) == 11:
+        argv = ["--id", argv[0]] + argv[1:]          # '-B__O2eqRYc' 같은 id
+    a = ap.parse_args(argv)
+    target = a.target_id or a.target
+    if not target:
+        ap.error("영상 URL 또는 id가 필요하다")
+    url = norm_url(target)
     os.makedirs(a.out, exist_ok=True)
 
     rc, out, err = run(["--dump-single-json", "--skip-download", url])
