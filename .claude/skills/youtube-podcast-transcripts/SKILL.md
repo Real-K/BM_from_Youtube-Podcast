@@ -44,14 +44,29 @@ pip install curl_cffi pyyaml markdownify                                   # 처
 ### 1. 발견 — `scripts/discover.py`
 
 ```bash
-python scripts/discover.py "<주제>" --out out/<slug> [--industry 은행 보험] [--channels channels.txt] [--rss feeds.txt] [--per-query 15] [--min-minutes 8] [--since 2024-01-01]
+python scripts/discover.py "<주제>" --out out/<slug> [--industry 은행 보험] [--channels channels.txt] [--rss feeds.txt]     [--queries queries.txt] [--exclude ids.txt] [--channel-kw agent agentic CIO ...] [--per-query 15] [--min-minutes 8]
 ```
+
+`--queries`는 한 줄에 하나씩 적은 질의 파일이다. 조직명·직함·업무 프로세스 이름처럼 격자로 만들 수 없는 질의를 여기 넣는다.
+`--exclude`는 이미 수집한 영상 id 목록이고, `--channel-kw`는 채널 목록을 제목 단어로 거를 때 쓴다.
 
 주제에서 검색 격자를 만든다(`references/search-grid.md`). **일반 키워드는 수율이 낮다** — 벤더 마케팅 쇼츠와 튜토리얼이
 대부분이다. 산업어를 붙이고(`bank`, `insurance`), 실패어를 붙인 검색(`what did not work`, `lessons learned`,
 `postmortem`)이 실제 사례를 낸다. 채널 목록(`--channels`)은 키워드 검색보다 낫다 — 컨퍼런스 채널·팟캐스트 채널을 직접 훑는다.
 
 출력 `candidates.jsonl`: id·url·title·channel·duration·date·매칭된 질의·형식 추정(session/podcast/panel/short).
+
+### 1-1. 거르기 — `scripts/score_titles.py`
+
+질의를 넓히면 후보가 수천 건이 된다. 전부 읽힐 수 없으므로 제목과 채널만으로 점수를 매겨 상위만 남긴다.
+
+```bash
+python scripts/score_titles.py out/<slug>/candidates.jsonl --out out/<slug>/screen [--top 660] [--groups 6] [--exclude ids.txt]
+```
+
+튜토리얼·강좌 어휘는 크게 감점하고 agent·사례·임원 직함·산업어에 가점한다. `scored.jsonl`에 **탈락한 것도 사유와 함께**
+남는다. `titles_N.tsv`는 판독을 나눠 맡기기 위한 분할 파일이다. **점수는 판정이 아니다** — 남은 것은 사람이 다시 읽는다.
+실측: 후보 3,992건 → 10분 이상 2,838건 → 점수 통과 744건 → 상위 660건만 판독.
 
 ### 2. 수집 — `scripts/fetch_transcript.py`
 
@@ -60,8 +75,12 @@ python scripts/fetch_transcript.py <url-or-id> --out out/<slug>/<id> [--langs en
 ```
 
 **수동 자막이 있으면 그것을, 없으면 자동 자막을** 받는다. 어느 쪽인지 `meta.json`의 `transcript_auto`에 남긴다.
-자동 자막에는 인명·기업명·전문용어·숫자 오류가 있다 — 지금까지 받은 영상 99편 중 수동 자막이 있는 것은 0편이었다.
-그래서 이 스킬의 나머지 전부가 필요하다.
+자동 자막에는 인명·기업명·전문용어·숫자 오류가 있다. 최근 두 배치 161편에서 수동 자막은 32편(20%)이었다 —
+드물지만 없지는 않으니 트랙 목록을 먼저 본다. 나머지 80%가 이 스킬의 나머지 전부를 필요하게 만든다.
+
+**영상 id는 `-`나 `_`로 시작할 수 있다.** `-`로 시작하는 id는 URL로 넘기거나 `--id=값` 형태를 쓴다.
+폴더 이름도 `--out=-B__O2eqRYc`처럼 `=`로 붙인다. 그리고 **이름 접두사로 폴더를 거르지 않는다** —
+`_`로 시작하는 폴더를 건너뛰면 `_IZR66PaJbM` 같은 실제 영상이 조용히 빠진다. 건너뛸 폴더는 이름을 나열한다.
 
 ### 3. 정리 — `scripts/correct_transcript.py` (기계)
 
